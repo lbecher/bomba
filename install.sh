@@ -5,10 +5,10 @@ export STORAGE_DEVICE="/dev/mmcblk0"
 export ROOT="${STORAGE_DEVICE}p1"
 
 apt update
-apt install parted debootstrap e2fsprogs git
+apt install -y parted debootstrap e2fsprogs git
 
 parted -s $STORAGE_DEVICE mklabel msdos
-parted -s $STORAGE_DEVICE mkpart primary ext4 8MiB 3501MiB
+parted -s $STORAGE_DEVICE mkpart primary ext4 4MiB 100%
 parted -s $STORAGE_DEVICE set 1 boot on
 
 export ROOT_PARTUUID=$( blkid -o value -s PARTUUID )
@@ -19,8 +19,8 @@ mount $ROOT /mnt/sd
 
 debootstrap --arch=armhf --foreign bookworm /mnt/sd http://deb.debian.org/debian
 
-cp -v modules/* /mnt/sd/lib/modules/
-cp -v boot/* /mnt/sd/boot/
+cp -v -r modules/* /mnt/sd/lib/modules/
+cp -v -r boot/* /mnt/sd/boot/
 
 echo "  APPEND earlyprintk root=PARTUUID=$ROOT_PARTUUID rootwait rootfstype=ext4 init=/sbin/init loglevel=0 fsck.repair=yes video=HDMI-A-1:1280x720" >> /mnt/sd/boot/extlinux/extlinux.conf
 
@@ -42,10 +42,10 @@ echo "127.0.1.1 $HOSTNAME.localdomain $HOSTNAME" >> /mnt/sd/etc/hosts
 
 echo -e "PARTUUID=$ROOT_PARTUUID\t/\text4\tdefaults\t0\t0" > /mnt/sd/etc/fstab
 
-chroot /mnt/sd -c "apt install bash udev sudo u-boot-tools parted initramfs-tools nano iwd network-manager openssh-server ntpdate iputils-ping wget curl dosfstools ntfs-3g xfsprogs e2fsprogs btrfs-progs tar zip unzip binutils build-essential cargo ffmpeg python3 python3-venv python3-pip git htop lm-sensors firmware-misc-nonfree firmware-atheros firmware-realtek debootstrap"
+chroot /mnt/sd -c "/bin/apt install -y bash udev sudo u-boot-tools parted initramfs-tools nano iwd network-manager openssh-server ntpdate iputils-ping wget curl dosfstools ntfs-3g xfsprogs e2fsprogs btrfs-progs tar zip unzip binutils build-essential cargo ffmpeg python3 python3-venv python3-pip git htop lm-sensors firmware-misc-nonfree firmware-atheros firmware-realtek debootstrap"
 
-chroot /mnt/sd -c "useradd -m -G sudo user"
-chroot /mnt/sd -c "passwd user"
+chroot /mnt/sd -c "/sbin/useradd -m -G sudo user"
+chroot /mnt/sd -c "/sbin/passwd user"
 
-chroot /mnt/sd -c "chsh -s /bin/bash"
-chroot /mnt/sd -c "chsh -s /bin/bash user"
+chroot /mnt/sd -c "/sbin/chsh -s /bin/bash"
+chroot /mnt/sd -c "/sbin/chsh -s /bin/bash user"
