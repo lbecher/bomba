@@ -25,6 +25,7 @@ cp -v -r boot/* /mnt/sd/boot/
 echo "  APPEND earlyprintk root=PARTUUID=$ROOT_PARTUUID rootwait rootfstype=ext4 init=/sbin/init loglevel=0 fsck.repair=yes video=HDMI-A-1:1280x720" >> /mnt/sd/boot/extlinux/extlinux.conf
 
 cp -v /etc/resolv.conf /mnt/sd/etc/resolv.conf
+cp -v sources.list /mnt/sd/etc/apt/sources.list
 
 chroot /mnt/sd /debootstrap/debootstrap --second-stage
 
@@ -44,8 +45,8 @@ echo -e "PARTUUID=$ROOT_PARTUUID\t/\text4\tdefaults\t0\t0" > /mnt/sd/etc/fstab
 
 chroot /mnt/sd /bin/apt install -y bash udev sudo u-boot-tools parted initramfs-tools nano iwd network-manager openssh-server ntpdate iputils-ping wget curl dosfstools ntfs-3g xfsprogs e2fsprogs btrfs-progs tar zip unzip binutils build-essential cargo ffmpeg python3 python3-venv python3-pip git htop lm-sensors firmware-misc-nonfree firmware-atheros firmware-realtek debootstrap
 
-chroot /mnt/sd /sbin/useradd -m -G sudo user
-chroot /mnt/sd /sbin/passwd user
+chroot /mnt/sd /bin/useradd -m -G sudo user
+chroot /mnt/sd /bin/passwd user
 
 chroot /mnt/sd /bin/chsh -s /bin/bash
 chroot /mnt/sd /bin/chsh -s /bin/bash user
