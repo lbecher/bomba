@@ -11,7 +11,7 @@ parted -s $STORAGE_DEVICE mklabel msdos
 parted -s $STORAGE_DEVICE mkpart primary ext4 1MiB 100%
 parted -s $STORAGE_DEVICE set 1 boot on
 
-export ROOT_PARTUUID=$( blkid -o value -s PARTUUID )
+export ROOT_PARTUUID=$( blkid -o value -s PARTUUID $ROOT )
 
 mkfs.ext4 $ROOT
 mkdir /mnt/debian
