@@ -18,7 +18,6 @@ mkdir -p /mnt/debian
 mount $ROOT /mnt/debian
 
 debootstrap --arch=armhf --foreign bookworm /mnt/debian http://deb.debian.org/debian
-chroot /mnt/debian /debootstrap/debootstrap --second-stage
 
 mkdir -p /mnt/debian/lib/modules
 mkdir -p /mnt/debian/boot
@@ -28,6 +27,9 @@ cp -v -r boot/* /mnt/debian/boot
 echo "  APPEND earlyprintk root=PARTUUID=$ROOT_PARTUUID rootwait rootfstype=ext4 init=/sbin/init loglevel=0 fsck.repair=yes video=HDMI-A-1:1280x720" >> /mnt/debian/boot/extlinux/extlinux.conf
 
 cp -v /etc/resolv.conf /mnt/debian/etc/resolv.conf
+
+chroot /mnt/debian /debootstrap/debootstrap --second-stage
+
 cp -v sources.list /mnt/debian/etc/apt/sources.list
 
 echo "LANG=pt_BR.UTF-8" > /mnt/debian/etc/locale.conf
