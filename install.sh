@@ -8,7 +8,7 @@ apt update
 apt install -y parted debootstrap e2fsprogs git
 
 parted -s $STORAGE_DEVICE mklabel msdos
-parted -s $STORAGE_DEVICE mkpart primary ext4 8KiB 100%
+parted -s $STORAGE_DEVICE mkpart primary ext4 1MiB 100%
 systemctl daemon-reload
 
 export ROOT_PARTUUID=$( blkid -o value -s PARTUUID $ROOT )
