@@ -20,8 +20,8 @@ mount $ROOT /mnt/debian
 debootstrap --arch=armhf --foreign bookworm /mnt/debian http://deb.debian.org/debian
 chroot /mnt/debian /debootstrap/debootstrap --second-stage
 
-cp -v -r modules/* /mnt/debian/lib/modules
-cp -v -r boot/* /mnt/debian/boot
+cp -v -r modules /mnt/debian/lib/modules
+cp -v -r boot /mnt/debian/boot
 
 echo "  APPEND earlyprintk root=PARTUUID=$ROOT_PARTUUID rootwait rootfstype=ext4 init=/sbin/init loglevel=0 fsck.repair=yes video=HDMI-A-1:1280x720" >> /mnt/debian/boot/extlinux/extlinux.conf
 
