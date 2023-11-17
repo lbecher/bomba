@@ -5,7 +5,8 @@ export STORAGE_DEVICE="/dev/mmcblk0"
 export ROOT="${STORAGE_DEVICE}p1"
 
 apt update
-apt install -y parted debootstrap e2fsprogs git
+apt install -y parted debootstrap e2fsprogs ntp
+date
 
 parted -s $STORAGE_DEVICE mklabel msdos
 parted -s $STORAGE_DEVICE mkpart primary ext4 0% 100%
