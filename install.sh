@@ -5,8 +5,7 @@ export STORAGE_DEVICE="/dev/mmcblk0"
 export ROOT="${STORAGE_DEVICE}p1"
 
 apt update
-apt install -y parted debootstrap e2fsprogs ntp
-date
+apt install -y parted debootstrap e2fsprogs
 
 parted -s $STORAGE_DEVICE mklabel msdos
 parted -s $STORAGE_DEVICE mkpart primary ext4 0% 100%
@@ -49,7 +48,7 @@ echo "127.0.1.1 $HOSTNAME.localdomain $HOSTNAME" >> /mnt/debian/etc/hosts
 echo -e "PARTUUID=$ROOT_PARTUUID\t/\text4\tdefaults\t0\t0" > /mnt/debian/etc/fstab
 
 chroot /mnt/debian /bin/apt update
-chroot /mnt/debian /bin/apt install -y bash udev sudo u-boot-tools parted initramfs-tools nano iwd network-manager openssh-server ntpdate iputils-ping wget curl dosfstools ntfs-3g xfsprogs e2fsprogs btrfs-progs tar zip unzip binutils build-essential cargo ffmpeg python3 python3-venv python3-pip git htop lm-sensors firmware-misc-nonfree firmware-atheros firmware-realtek debootstrap
+chroot /mnt/debian /bin/apt install -y bash udev sudo u-boot-tools parted initramfs-tools nano iwd network-manager openssh-server ntp iputils-ping wget curl dosfstools ntfs-3g xfsprogs e2fsprogs btrfs-progs tar zip unzip binutils build-essential cargo ffmpeg python3 python3-venv python3-pip git htop lm-sensors firmware-misc-nonfree firmware-atheros firmware-realtek debootstrap
 
 chroot /mnt/debian /sbin/useradd -m -G sudo user
 chroot /mnt/debian /bin/passwd user
